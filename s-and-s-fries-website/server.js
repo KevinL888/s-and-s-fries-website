@@ -1,13 +1,47 @@
 const express = require("express");
 const sqlite3 = require("sqlite3").verbose();
 const bodyParser = require("body-parser");
+const mustacheExpress = require("mustache-express");
+const reviewModel = require("./models/reviewModel");
+const path = require("path");
+
 
 const app = express();
 const port = 3000;
 
-app.use(bodyParser.json());
+// Configure Mustache as the view engine
+app.engine("mustache", mustacheExpress());
+app.set("view engine", "mustache");
+app.set("views", path.join(__dirname, "views"));
 
+// Middleware
+app.use(express.static(path.join(__dirname, "public"))); // Serve static files (CSS, images)
+app.use(bodyParser.json());
+app.use(express.urlencoded({ extended: true })); // To handle form data
+
+// Connect to SQLite database
 const db = new sqlite3.Database("sns_fries.db");
+
+// Home Route - Render index.mustache
+app.get("/", (req, res) => {
+    reviewModel.getAllReviews((err, reviews) => {
+        if (err) {
+            console.error("Error fetching reviews:", err);
+            return res.status(500).send("Error fetching reviews");
+        }
+
+        // Truncate long reviews before passing them to Mustache
+        const truncatedReviews = reviews.map(review => ({
+            ...review,
+            short_review_text: review.review_text.length > 150 ? review.review_text.substring(0, 150) + "..." : review.review_text
+        }));
+
+        res.render("index", { reviews: truncatedReviews });
+    });
+});
+
+
+
 
 // Get all menu items
 app.get("/api/menu", (req, res) => {
@@ -50,25 +84,29 @@ app.delete("/api/menu/:id", (req, res) => {
 
 // Get all reviews
 app.get("/api/reviews", (req, res) => {
-    db.all("SELECT * FROM reviews", [], (err, rows) => {
+    reviewModel.getAllReviews((err, reviews) => {
         if (err) return res.status(500).json({ error: err.message });
-        res.json(rows);
+        res.json(reviews);
     });
 });
 
-// Add a review
+// Add a new review
 app.post("/api/reviews", (req, res) => {
     const { menu_item_id, customer_name, rating, review_text } = req.body;
-    db.run(
-        `INSERT INTO reviews (menu_item_id, customer_name, rating, review_text) VALUES (?, ?, ?, ?)`,
-        [menu_item_id, customer_name, rating, review_text],
-        function (err) {
-            if (err) return res.status(500).json({ error: err.message });
-            res.json({ response: "REVIEW ADDED", id: this.lastID });
-        }
-    );
+
+    // Validate inputs (optional)
+    if (!menu_item_id || !customer_name || !rating || !review_text) {
+        return res.status(400).json({ error: "All fields are required" });
+    }
+
+    reviewModel.addReview(menu_item_id, customer_name, rating, review_text, (err, result) => {
+        if (err) return res.status(500).json({ error: err.message });
+        res.json({ response: "REVIEW ADDED", id: result.id });
+    });
 });
 
+// Start the server
 app.listen(port, () => {
-    console.log(`S & S Fries API running on http://localhost:${port}/api`);
+    console.log(`✅ S & S Fries API running on http://localhost:${port}`);
+    console.log(`✅ Homepage available at http://localhost:${port}/`);
 });
