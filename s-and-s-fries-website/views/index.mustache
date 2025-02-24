@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="utf-8">
     <title>S & S Burgers & Fries</title>
@@ -31,7 +30,6 @@
     <!-- Template Stylesheet -->
     <link href="/css/style.css" rel="stylesheet">
 </head>
-
 <body>
     <div class="container-xxl bg-white p-0">
         <!-- Spinner Start -->
@@ -41,44 +39,24 @@
             </div>
         </div>
         <!-- Spinner End -->
-
-
-        <!-- Navbar & Hero Start -->
         <div class="container-xxl position-relative p-0">
-            <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-4 px-lg-5 py-3 py-lg-0">
-                <a href="" class="navbar-brand p-0">
-                    <h1 class="text-primary m-0"><i class="fa fa-hamburger me-3"></i>S & S Fries</h1>
-                    <!-- <img src="img/logo.png" alt="Logo"> -->
-                </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
-                    <span class="fa fa-bars"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarCollapse">
-                    <div class="navbar-nav ms-auto py-0 pe-4">
-                        <a href="index.html" class="nav-item nav-link active">Home</a>
-                        <a href="about.html" class="nav-item nav-link">About</a>
-                        <a href="menu.html" class="nav-item nav-link">Menu</a>
-                        <a href="contact.html" class="nav-item nav-link">Contact</a>
-                    </div>
-                    <a href="" class="btn btn-primary py-2 px-4">Login</a>
-                </div>
-            </nav>
+            {{> layouts/header}}
 
-            <div class="container-xxl py-5 bg-dark hero-header mb-5">
-                <div class="container my-5 py-5">
-                    <div class="row align-items-center g-5">
-                        <div class="col-lg-6 text-center text-lg-start">
-                            <h1 class="display-3 text-white animated slideInLeft">Nominated For<br>Best Poutine</h1>
-                            <p class="text-white animated slideInLeft mb-4 pb-2">Come check us out at the parking lot of Canadian Tire in Barrhaven</p>
-                        </div>
-                        <div class="col-lg-6 text-center text-lg-end overflow-hidden">
-                            <img class="img-fluid" src="/images/Small-Poutine.png" alt="">
+                <div class="container-xxl py-5 bg-dark hero-header mb-5">
+                    <div class="container my-5 py-5">
+                        <div class="row align-items-center g-5">
+                            <div class="col-lg-6 text-center text-lg-start">
+                                <h1 class="display-3 text-white animated slideInLeft">Nominated For<br>Best Poutine</h1>
+                                <p class="text-white animated slideInLeft mb-4 pb-2">Come check us out at the parking lot of Canadian Tire in Barrhaven</p>
+                            </div>
+                            <div class="col-lg-6 text-center text-lg-end overflow-hidden">
+                                <img class="img-fluid" src="/images/Small-Poutine.png" alt="">
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            <!-- Navbar & Hero End -->
         </div>
-        <!-- Navbar & Hero End -->
 
         <!-- About Start -->
         <div class="container-xxl py-5">
@@ -131,7 +109,6 @@
             </div>
         </div>
         <!-- About End -->
-
 
         <!-- Menu Start -->
         <div class="container-xxl py-5">
@@ -278,70 +255,40 @@
         </div>
         <!-- Testimonial End -->
 
-
         <!-- Google Maps Section -->
         <div class="container mt-5">
             <h2 class="text-center">Find Us Here</h2>
             <div id="map" style="width: 100%; height: 400px;"></div>
         </div>
         
-        <!-- Footer Start -->
-        <div class="container-fluid bg-dark text-light footer pt-5 mt-5 wow fadeIn" data-wow-delay="0.1s">
-            <div class="container py-5">
-                <div class="row g-5">
-                    <div class="col-lg-3 col-md-6">
-                        <h4 class="section-title ff-secondary text-start text-primary fw-normal mb-4">Contact</h4>
-                        <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i>2501 Greenbank Rd, Nepean, ON K2J 4Y6</p>
-                        <p class="mb-2"><i class="fa fa-phone-alt me-3"></i>613-869-9180</p>
-                        <p class="mb-2"><i class="fa fa-envelope me-3"></i>garylai220@gmail.com</p>
-                        <div class="d-flex pt-2">
-                            <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-twitter"></i></a>
-                            <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-facebook-f"></i></a>
-                            <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-youtube"></i></a>
-                            <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-linkedin-in"></i></a>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6">
-                        <h4 class="section-title ff-secondary text-start text-primary fw-normal mb-4">Opening</h4>
-                        <h5 class="text-light fw-normal">Monday - Saturday</h5>
-                        <p>11AM - 7PM</p>
-                        <h5 class="text-light fw-normal">Sunday</h5>
-                        <p>11AM - 6:30PM</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- Footer End -->
+        {{> layouts/footer}}
 
-        <!-- Back to Top -->
-        <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
+        <!-- JavaScript Libraries -->
+        <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="/lib/wow/wow.min.js"></script>
+        <script src="/lib/easing/easing.min.js"></script>
+        <script src="/lib/waypoints/waypoints.min.js"></script>
+        <script src="/lib/counterup/counterup.min.js"></script>
+        <script src="/lib/owlcarousel/owl.carousel.min.js"></script>
+        <script src="/lib/tempusdominus/js/moment.min.js"></script>
+        <script src="/lib/tempusdominus/js/moment-timezone.min.js"></script>
+        <script src="/lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
+
+        <!-- Template Javascript -->
+        <!-- Load map logic -->
+        <script src="/js/mapLogic.js"></script>
+
+        <!-- Bootstrap & Google Maps API -->
+        <script async defer 
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDSKbat8DwD4rHKAylgB1QMPhTAMEvdJZI&callback=initMap&map_ids=9e7a89853a456c80&libraries=marker">
+        </script>
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+        <!-- Template Javascript -->
+        <script src="/js/main.js"></script>
     </div>
-
-    <!-- JavaScript Libraries -->
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="/lib/wow/wow.min.js"></script>
-    <script src="/lib/easing/easing.min.js"></script>
-    <script src="/lib/waypoints/waypoints.min.js"></script>
-    <script src="/lib/counterup/counterup.min.js"></script>
-    <script src="/lib/owlcarousel/owl.carousel.min.js"></script>
-    <script src="/lib/tempusdominus/js/moment.min.js"></script>
-    <script src="/lib/tempusdominus/js/moment-timezone.min.js"></script>
-    <script src="/lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
-
-    <!-- Load map logic -->
-    <script src="/js/mapLogic.js"></script>
-
-    <!-- Bootstrap & Google Maps API -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-
-    <!-- Google Maps API with async defer -->
-<script async defer 
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDSKbat8DwD4rHKAylgB1QMPhTAMEvdJZI&callback=initMap&map_ids=9e7a89853a456c80&libraries=marker">
-</script>
-
-    <!-- Template Javascript -->
-    <script src="/js/main.js"></script>
 </body>
-
 </html>
+

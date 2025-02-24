@@ -18,14 +18,14 @@ db.serialize(function() {
 // Insert sample menu items
 db.run(`INSERT INTO menu_items (name, description, price, category, image_url) VALUES 
     -- Fresh Cut Fries
-    ('Kid\'s Fries', 'Classic fresh cut fries (Kid\'s size)', 4.00, 'Fries', 'kids-fries.jpg'),
+    ('Kid''s Fries', 'Classic fresh cut fries (Kid''s size)', 4.00, 'Fries', 'kids-fries.jpg'),
     ('Small Fries', 'Classic fresh cut fries (Small size)', 5.50, 'Fries', 'small-fries.jpg'),
     ('Medium Fries', 'Classic fresh cut fries (Medium size)', 6.25, 'Fries', 'medium-fries.jpg'),
     ('Large Fries', 'Classic fresh cut fries (Large size)', 7.00, 'Fries', 'large-fries.jpg'),
     ('Family Pack Fries', 'Classic fresh cut fries (Family pack)', 12.00, 'Fries', 'family-pack-fries.jpg'),
 
     -- Poutine
-    ('Kid\'s Poutine', 'Classic poutine with cheese curds and gravy (Kid\'s size)', 7.00, 'Poutine', 'kids-poutine.jpg'),
+    ('Kid''s Poutine', 'Classic poutine with cheese curds and gravy (Kid''s size)', 7.00, 'Poutine', 'kids-poutine.jpg'),
     ('Small Poutine', 'Classic poutine with cheese curds and gravy (Small size)', 9.00, 'Poutine', 'small-poutine.jpg'),
     ('Medium Poutine', 'Classic poutine with cheese curds and gravy (Medium size)', 11.00, 'Poutine', 'medium-poutine.jpg'),
     ('Large Poutine', 'Classic poutine with cheese curds and gravy (Large size)', 13.00, 'Poutine', 'large-poutine.jpg'),
@@ -36,12 +36,12 @@ db.run(`INSERT INTO menu_items (name, description, price, category, image_url) V
     -- Platters (All Platters Include Fries and Drink)
     ('Cheeseburger Platter', 'Cheeseburger served with fries and drink', 12.25, 'Platters', 'cheeseburger-platter.jpg'),
     ('Chicken Burger Platter', 'Chicken burger served with fries and drink', 12.25, 'Platters', 'chicken-burger-platter.jpg'),
-    ('Double Pogo Platter', 'Two pogos served with fries and drink', 12.25, 'Platters', 'double-pogo-platter.jpg'),
-    ('Double Hot Dog Platter', 'Two hot dogs served with fries and drink', 12.25, 'Platters', 'double-hotdog-platter.jpg'),
+    ('Double Pogo Platter', 'Two pogos served with fries and drink', 12.50, 'Platters', 'double-pogo-platter.jpg'),
+    ('Double Hot Dog Platter', 'Two hot dogs served with fries and drink', 12.50, 'Platters', 'double-hotdog-platter.jpg'),
     ('Sausage Platter', 'Grilled sausage served with fries and drink', 12.25, 'Platters', 'sausage-platter.jpg'),
     ('Single Pogo Platter', 'One pogo served with fries and drink', 10.50, 'Platters', 'single-pogo-platter.jpg'),
-    ('Single Hot Dog Platter', 'One hot dog served with fries and drink', 11.75, 'Platters', 'single-hotdog-platter.jpg'),
-    ('Hamburger Platter', 'Hamburger served with fries and drink', 12.25, 'Platters', 'hamburger-platter.jpg'),
+    ('Single Hot Dog Platter', 'One hot dog served with fries and drink', 10.50, 'Platters', 'single-hotdog-platter.jpg'),
+    ('Hamburger Platter', 'Hamburger served with fries and drink', 11.75, 'Platters', 'hamburger-platter.jpg'),
 
     -- Sandwiches
     ('Hamburger', 'Classic grilled hamburger', 5.50, 'Sandwiches', 'hamburger.jpg'),
@@ -50,7 +50,7 @@ db.run(`INSERT INTO menu_items (name, description, price, category, image_url) V
     ('Chicken Fingers & Fries', 'Breaded chicken fingers served with fries', 12.00, 'Sandwiches', 'chicken-fingers.jpg'),
     ('Hot Dog', 'Grilled hot dog in a fresh bun', 4.00, 'Sandwiches', 'hotdog.jpg'),
     ('Cheese Dog', 'Hot dog with melted cheese', 4.50, 'Sandwiches', 'cheese-dog.jpg'),
-    ('Pogo', 'Battered corn dog on a stick', 3.00, 'Sandwiches', 'pogo.jpg'),
+    ('Pogo', 'Battered corn dog on a stick', 4.00, 'Sandwiches', 'pogo.jpg'),
     ('Sausage', 'Grilled sausage in a bun', 6.00, 'Sandwiches', 'sausage.jpg'),
 
     -- Drinks
@@ -67,12 +67,12 @@ db.run(`INSERT INTO menu_items (name, description, price, category, image_url) V
 
     -- Extras
     ('Sub Fries for Poutine', 'Upgrade your meal by replacing fries with poutine', 3.00, 'Extras', 'sub-fries-poutine.jpg'),
-    ('Extra Cheese', 'Extra cheese topping', 0.75, 'Extras', 'extra-cheese.jpg'),
+    ('Extra Cheese', 'Extra cheese topping', 3.00, 'Extras', 'extra-cheese.jpg'),
     ('Add Bacon (Slice)', 'Add crispy bacon to any meal', 0.75, 'Extras', 'bacon-slice.jpg'),
 
     -- Gravy
     ('Gravy', 'Rich homemade gravy', 1.25, 'Extras', 'gravy.jpg'),
-    ('Gravy on the Side (Small)', 'Small portion of gravy on the side', 1.50, 'Extras', 'gravy-small.jpg'),
+    ('Gravy on the Side (Small)', 'Small portion of gravy on the side', 1.75, 'Extras', 'gravy-small.jpg'),
     ('Gravy on the Side (Large)', 'Large portion of gravy on the side', 2.25, 'Extras', 'gravy-large.jpg')
 `);
 

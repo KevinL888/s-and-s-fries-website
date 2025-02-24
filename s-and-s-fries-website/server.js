@@ -4,8 +4,6 @@ const bodyParser = require("body-parser");
 const mustacheExpress = require("mustache-express");
 const reviewModel = require("./models/reviewModel");
 const path = require("path");
-
-
 const app = express();
 const port = 3000;
 
@@ -39,9 +37,6 @@ app.get("/", (req, res) => {
         res.render("index", { reviews: truncatedReviews });
     });
 });
-
-
-
 
 // Get all menu items
 app.get("/api/menu", (req, res) => {
@@ -107,6 +102,6 @@ app.post("/api/reviews", (req, res) => {
 
 // Start the server
 app.listen(port, () => {
-    console.log(`✅ S & S Fries API running on http://localhost:${port}`);
-    console.log(`✅ Homepage available at http://localhost:${port}/`);
+    console.log(`S & S Fries API running on http://localhost:${port}`);
+    console.log(`Homepage available at http://localhost:${port}/`);
 });
