@@ -97,5 +97,16 @@
         }
     });
     
+    // Dynamic Active Navbar Link
+    $(document).ready(function() {
+        var currentPath = window.location.pathname;
+        $(".navbar-nav .nav-link").each(function () {
+            $(this).removeClass("active");
+            if ($(this).attr("href") === currentPath) {
+                $(this).addClass("active");
+            }
+        });
+    });
+    
 })(jQuery);
 

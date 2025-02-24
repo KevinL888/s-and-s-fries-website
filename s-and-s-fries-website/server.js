@@ -17,6 +17,9 @@ app.use(express.static(path.join(__dirname, "public"))); // Serve static files (
 app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: true })); // To handle form data
 
+// Import Routes
+const menuRoutes = require("./routes/menuRoutes");
+
 // Connect to SQLite database
 const db = new sqlite3.Database("sns_fries.db");
 
@@ -37,6 +40,9 @@ app.get("/", (req, res) => {
         res.render("index", { reviews: truncatedReviews });
     });
 });
+
+// Menu Route
+app.use("/menu", menuRoutes);
 
 // Get all menu items
 app.get("/api/menu", (req, res) => {
