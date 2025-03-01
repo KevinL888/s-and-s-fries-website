@@ -49,4 +49,15 @@ function deleteMenuItem(id, callback) {
     });
 }
 
-module.exports = { getAllMenuItems, getMenuItemById, addMenuItem, deleteMenuItem };
+// Fetch unique categories
+function getAllCategories(callback) {
+    db.all("SELECT DISTINCT category FROM menu_items", [], (err, rows) => {
+        if (err) {
+            return callback(err, null);
+        }
+        const categories = rows.map(row => row.category); // Extract category names
+        callback(null, categories);
+    });
+}
+
+module.exports = { getAllMenuItems, getMenuItemById, addMenuItem, deleteMenuItem, getAllCategories };

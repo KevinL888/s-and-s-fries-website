@@ -1,9 +1,9 @@
 const express = require("express");
-const sqlite3 = require("sqlite3").verbose();
 const bodyParser = require("body-parser");
 const mustacheExpress = require("mustache-express");
-const reviewModel = require("./models/reviewModel");
 const path = require("path");
+const reviewModel = require("./models/reviewModel");
+
 const app = express();
 const port = 3000;
 
@@ -19,9 +19,7 @@ app.use(express.urlencoded({ extended: true })); // To handle form data
 
 // Import Routes
 const menuRoutes = require("./routes/menuRoutes");
-
-// Connect to SQLite database
-const db = new sqlite3.Database("sns_fries.db");
+const reviewRoutes = require("./routes/reviewRoutes"); // ✅ Added back reviewRoutes
 
 // Home Route - Render index.mustache
 app.get("/", (req, res) => {
@@ -41,70 +39,9 @@ app.get("/", (req, res) => {
     });
 });
 
-// Menu Route
+// Use Routes
 app.use("/menu", menuRoutes);
-
-// Get all menu items
-app.get("/api/menu", (req, res) => {
-    db.all("SELECT * FROM menu_items", [], (err, rows) => {
-        if (err) return res.status(500).json({ error: err.message });
-        res.json(rows);
-    });
-});
-
-// Get a menu item by ID
-app.get("/api/menu/:id", (req, res) => {
-    const id = req.params.id;
-    db.get("SELECT * FROM menu_items WHERE id = ?", [id], (err, row) => {
-        if (err) return res.status(500).json({ error: err.message });
-        res.json(row || { error: "Menu item not found" });
-    });
-});
-
-// Add a new menu item
-app.post("/api/menu", (req, res) => {
-    const { name, description, price, category, image_url } = req.body;
-    db.run(
-        `INSERT INTO menu_items (name, description, price, category, image_url) VALUES (?, ?, ?, ?, ?)`,
-        [name, description, price, category, image_url],
-        function (err) {
-            if (err) return res.status(500).json({ error: err.message });
-            res.json({ response: "MENU ITEM INSERTED", id: this.lastID });
-        }
-    );
-});
-
-// Delete a menu item
-app.delete("/api/menu/:id", (req, res) => {
-    const id = req.params.id;
-    db.run("DELETE FROM menu_items WHERE id = ?", [id], function (err) {
-        if (err) return res.status(500).json({ error: err.message });
-        res.json({ response: "MENU ITEM DELETED" });
-    });
-});
-
-// Get all reviews
-app.get("/api/reviews", (req, res) => {
-    reviewModel.getAllReviews((err, reviews) => {
-        if (err) return res.status(500).json({ error: err.message });
-        res.json(reviews);
-    });
-});
-
-// Add a new review
-app.post("/api/reviews", (req, res) => {
-    const { menu_item_id, customer_name, rating, review_text } = req.body;
-
-    // Validate inputs (optional)
-    if (!menu_item_id || !customer_name || !rating || !review_text) {
-        return res.status(400).json({ error: "All fields are required" });
-    }
-
-    reviewModel.addReview(menu_item_id, customer_name, rating, review_text, (err, result) => {
-        if (err) return res.status(500).json({ error: err.message });
-        res.json({ response: "REVIEW ADDED", id: result.id });
-    });
-});
+app.use("/reviews", reviewRoutes);
 
 // Start the server
 app.listen(port, () => {

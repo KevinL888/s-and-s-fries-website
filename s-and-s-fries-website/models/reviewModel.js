@@ -4,7 +4,10 @@ const db = new sqlite3.Database("sns_fries.db");
 // Fetch all reviews
 function getAllReviews(callback) {
     db.all("SELECT * FROM reviews", [], (err, rows) => {
-        if (err) return callback(err, null);
+        if (err) {
+            console.error("Error fetching reviews:", err.message);
+            return callback(err, null);
+        }
         callback(null, rows);
     });
 }
@@ -15,13 +18,13 @@ function addReview(menu_item_id, customer_name, rating, review_text, callback) {
         `INSERT INTO reviews (menu_item_id, customer_name, rating, review_text) VALUES (?, ?, ?, ?)`,
         [menu_item_id, customer_name, rating, review_text],
         function (err) {
-            if (err) return callback(err);
+            if (err) {
+                console.error("Error adding review:", err.message);
+                return callback(err, null);
+            }
             callback(null, { id: this.lastID });
         }
     );
 }
 
-module.exports = {
-    getAllReviews,
-    addReview
-};
+module.exports = { getAllReviews, addReview };

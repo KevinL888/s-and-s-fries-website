@@ -42,7 +42,6 @@
         </div>
         <!-- Spinner End -->
 
-
         <!-- Navbar & Hero Start -->
         <div class="container-xxl position-relative p-0">
             {{> layouts/header}}
@@ -54,6 +53,21 @@
         </div>
         <!-- Navbar & Hero End -->
 
+        <!-- Category Filter -->
+        <div class="container mb-4">
+            <div class="row">
+                <div class="col-lg-3 col-md-4 col-sm-6">
+                    <label for="categoryFilter" class="fw-bold text-secondary">Filter By Category:</label>
+                    <select id="categoryFilter" class="form-select">
+                        <option value="All">All Categories</option>
+                        {{#categories}}
+                        <option value="{{.}}">{{.}}</option>
+                        {{/categories}}
+                    </select>
+                </div>
+            </div>
+        </div>
+
         <!-- Menu Start -->
         <div class="container-xxl py-5">
             <div class="container">
@@ -61,9 +75,9 @@
                     <h5 class="section-title ff-secondary text-center text-primary fw-normal">Food Menu</h5>
                 </div>
                 <div class="row g-4">
-                {{#menuItems}}
-                    <div class="col-lg-6">
-                        <div class="d-flex align-items-center">
+                    {{#menuItems}}
+                    <div class="col-lg-6 menu-item d-flex align-items-stretch" data-category="{{category}}">
+                        <div class="d-flex align-items-center w-100">
                             <img class="flex-shrink-0 img-fluid rounded" src="/images/{{image_url}}" alt="{{name}}" style="width: 80px; height: 80px;">
                             <div class="w-100 d-flex flex-column text-start ps-4">
                                 <h5 class="d-flex justify-content-between border-bottom pb-2">
@@ -78,7 +92,9 @@
                 </div>
             </div>
         </div>
+
         <!-- Menu End -->
+
         {{> layouts/footer}}
         <!-- Back to Top -->
         <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
@@ -95,6 +111,7 @@
     <script src="/lib/tempusdominus/js/moment.min.js"></script>
     <script src="/lib/tempusdominus/js/moment-timezone.min.js"></script>
     <script src="/lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
+    <script src="/js/menuFilter.js"></script>
 
     <!-- Template Javascript -->
     <script src="js/main.js"></script>
