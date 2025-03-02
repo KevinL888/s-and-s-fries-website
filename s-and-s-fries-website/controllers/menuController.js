@@ -1,26 +1,35 @@
 const menuModel = require("../models/menuModel");
+const path = require("path");
+const fs = require("fs");
 
-// Render the menu page with menu items and categories
+//  **Render Menu Page**
 function getMenuPage(req, res) {
     menuModel.getAllMenuItems((err, menuItems) => {
-        if (err) {
-            return res.status(500).send("Database error");
-        }
+        if (err) return res.status(500).send("Database error");
 
         menuModel.getAllCategories((err, categories) => {
-            if (err) {
-                return res.status(500).send("Database error");
-            }
+            if (err) return res.status(500).send("Database error");
 
+            // Ensure `user` is always defined
+            const user = req.user || null;
+            const isAdmin = user && user.role === "admin";
+
+            console.log("🔹 Debugging User in getMenuPage:", user);
+            console.log("🔹 isAdmin Value in getMenuPage:", isAdmin);
+
+            // Pass user and admin status to Mustache
             res.render("menu", { 
                 menuItems, 
-                categories 
-            }); // 
+                categories,
+                user,
+                isAdmin
+            });
         });
     });
 }
 
-// API: Fetch all menu items (JSON)
+
+//  **Fetch All Menu Items (JSON)**
 function getAllMenuItemsAPI(req, res) {
     menuModel.getAllMenuItems((err, menuItems) => {
         if (err) return res.status(500).json({ error: "Database error" });
@@ -28,19 +37,18 @@ function getAllMenuItemsAPI(req, res) {
     });
 }
 
-// API: Fetch menu items by category
+//  **Fetch Menu Items by Category (JSON)**
 function getMenuItemsByCategory(req, res) {
     const category = req.params.category;
     menuModel.getAllMenuItems((err, menuItems) => {
         if (err) return res.status(500).json({ error: "Database error" });
 
-        // Filter menu items based on category
         const filteredItems = menuItems.filter(item => item.category === category);
         res.json(filteredItems);
     });
 }
 
-// API: Fetch all categories (JSON)
+//  **Fetch All Categories (JSON)**
 function getAllCategoriesAPI(req, res) {
     menuModel.getAllCategories((err, categories) => {
         if (err) return res.status(500).json({ error: "Database error" });
@@ -48,7 +56,7 @@ function getAllCategoriesAPI(req, res) {
     });
 }
 
-// API: Fetch a single menu item by ID
+//  **Fetch a Single Menu Item by ID (JSON)**
 function getMenuItemById(req, res) {
     const id = req.params.id;
     menuModel.getMenuItemById(id, (err, menuItem) => {
@@ -58,29 +66,61 @@ function getMenuItemById(req, res) {
     });
 }
 
-// API: Add a new menu item
+//  **Add New Menu Item (Image Upload Handled in `menuRoutes.js`)**
 function addMenuItem(req, res) {
-    const { name, description, price, category, image_url } = req.body;
+    const { name, description, price, category } = req.body;
+    const image_url = req.file ? req.file.filename : null; // Save image filename
+
     if (!name || !description || !price || !category) {
         return res.status(400).json({ error: "Missing required fields" });
     }
 
     menuModel.addMenuItem(name, description, price, category, image_url, (err, id) => {
         if (err) return res.status(500).json({ error: "Database error" });
-        res.status(201).json({ message: "Menu item added", id });
+        res.status(201).json({ message: "Menu item added successfully", id });
     });
 }
 
-// API: Delete a menu item
+function updateMenuItem(req, res) {
+    const { id, name, description, price, category } = req.body;
+    const image_url = req.file ? req.file.filename : null; // Save new image filename if provided
+
+    menuModel.updateMenuItem(id, name, description, price, category, image_url, (err) => {
+        if (err) return res.status(500).json({ error: "Database error" });
+        res.json({ message: "Menu item updated successfully" });
+    });
+}
+
+
+// 📌 **Delete Menu Item (Removes Image)**
 function deleteMenuItem(req, res) {
     const id = req.params.id;
-    menuModel.deleteMenuItem(id, (err) => {
-        if (err) return res.status(500).json({ error: "Database error" });
-        res.json({ message: "Menu item deleted" });
+
+    menuModel.getMenuItemById(id, (err, menuItem) => {
+        if (err || !menuItem) {
+            return res.status(404).json({ error: "Menu item not found" });
+        }
+
+        // Delete the menu item from DB
+        menuModel.deleteMenuItem(id, (err) => {
+            if (err) return res.status(500).json({ error: "Database error" });
+
+            // If an image exists, delete it from /public/images/
+            if (menuItem.image_url) {
+                const imagePath = path.join(__dirname, "../public/images/", menuItem.image_url);
+                fs.unlink(imagePath, (unlinkErr) => {
+                    if (unlinkErr && unlinkErr.code !== "ENOENT") {
+                        console.error("Error deleting image:", unlinkErr);
+                    }
+                });
+            }
+
+            res.json({ message: "Menu item deleted successfully" });
+        });
     });
 }
 
-// Export all controller functions
+// **Export All Controller Functions**
 module.exports = {
     getMenuPage,
     getAllMenuItemsAPI,
@@ -89,4 +129,5 @@ module.exports = {
     getMenuItemById,
     addMenuItem,
     deleteMenuItem,
+    updateMenuItem,
 };

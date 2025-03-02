@@ -89,6 +89,32 @@
     $(document).ready(function () {
         var currentPath = window.location.pathname;
 
+        // Ensure token is sent when requesting `/menu`
+        if (currentPath === "/menu") {
+            const token = localStorage.getItem("token");
+
+            if (token) {
+                console.log("🔹 Sending token when requesting /menu");
+
+                fetch("/menu", {
+                    method: "GET",
+                    headers: {
+                        "Authorization": "Bearer " + token,
+                        "Content-Type": "application/json"
+                    }
+                })
+                .then(response => response.text())
+                .then(html => {
+                    console.log("✅ Menu page fetched successfully.");
+                    // Instead of reloading everything, update only sections if needed
+                    $("#menu-container").html($(html).find("#menu-container").html());
+                })
+                .catch(error => console.error("❌ Error fetching menu page:", error));
+            } else {
+                console.warn("⚠️ No token found in Local Storage. User might not be logged in.");
+            }
+        }
+
         // Highlight active nav link
         $(".navbar-nav .nav-link").each(function () {
             $(this).removeClass("active");
