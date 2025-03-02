@@ -47,14 +47,6 @@
             </div>
         </div>
 
-        <!-- Debug Section -->
-        <div class="container">
-            <h3>Debug Info:</h3>
-            <p><strong>User:</strong> {{#user}} {{username}} ({{email}}) {{/user}}{{^user}}Not Logged In{{/user}}</p>
-            <p><strong>Admin Status:</strong> {{#isAdmin}}✅ Yes{{/isAdmin}}{{^isAdmin}}❌ No{{/isAdmin}}</p>
-            <p><strong>Menu Items Count:</strong> {{menuItems.length}}</p>
-        </div>
-
         {{#isAdmin}}
             <div class="container mb-4 text-end">
                 <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addMenuItemModal">
