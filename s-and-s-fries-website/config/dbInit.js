@@ -22,13 +22,13 @@ db.serialize(async function() {
 
   // Hash password for admin user and insert
   const saltRounds = 10;
-  bcrypt.hash("admin123", saltRounds, (err, hash) => {
+  bcrypt.hash("7yrag7", saltRounds, (err, hash) => {
     if (err) {
       console.error("Error hashing admin password:", err);
     } else {
       db.run(
         "INSERT INTO users (username, email, password, role) VALUES (?, ?, ?, ?)",
-        ["admin", "admin@example.com", hash, "admin"],
+        ["admin", "garylai220@gmail.com", hash, "admin"],
         function (insertErr) {
           if (insertErr) {
             console.error("Error inserting admin user:", insertErr);
@@ -63,29 +63,27 @@ db.serialize(async function() {
 // Insert sample menu items
 db.run(`INSERT INTO menu_items (name, description, price, category, image_url) VALUES 
     -- Fresh Cut Fries
-    ('Kid''s Fries', 'Classic fresh cut fries (Kid''s size)', 4.00, 'Fries', 'kids-fries.jpg'),
-    ('Small Fries', 'Classic fresh cut fries (Small size)', 5.50, 'Fries', 'small-fries.jpg'),
-    ('Medium Fries', 'Classic fresh cut fries (Medium size)', 6.25, 'Fries', 'medium-fries.jpg'),
-    ('Large Fries', 'Classic fresh cut fries (Large size)', 7.00, 'Fries', 'large-fries.jpg'),
-    ('Family Pack Fries', 'Classic fresh cut fries (Family pack)', 12.00, 'Fries', 'family-pack-fries.jpg'),
-
-    -- Poutine
-    ('Kid''s Poutine', 'Classic poutine with cheese curds and gravy (Kid''s size)', 7.00, 'Poutine', 'kids-poutine.jpg'),
-    ('Small Poutine', 'Classic poutine with cheese curds and gravy (Small size)', 9.00, 'Poutine', 'small-poutine.jpg'),
+    ('Kid''s Fries', 'Classic fresh cut fries (Kid''s size)', 4.00, 'Fries/OnionRings', 'french-fries.jpg'),
+    ('Small Fries', 'Classic fresh cut fries (Small size)', 5.50, 'Fries/OnionRings', 'french-fries.jpg'),
+    ('Medium Fries', 'Classic fresh cut fries (Medium size)', 6.25, 'Fries/OnionRings', 'french-fries.jpg'),
+    ('Large Fries', 'Classic fresh cut fries (Large size)', 7.00, 'Fries/OnionRings', 'french-fries.jpg'),
+    ('Family Pack Fries', 'Classic fresh cut fries (Family pack)', 12.00, 'Fries/OnionRings', 'french-fries.jpg'),
+	  ('Onion Rings', 'Crispy deep-fried onion rings (Medium Size)', 6.50, 'Fries/OnionRings', 'onion-rings.jpg'),
+    
+	-- Poutine
+    ('Kid''s Poutine', 'Classic poutine with cheese curds and gravy (Kid''s size)', 7.00, 'Poutine', 'poutines.jpg'),
+    ('Small Poutine', 'Classic poutine with cheese curds and gravy (Small size)', 9.00, 'Poutine', 'poutines.jpg'),
     ('Medium Poutine', 'Classic poutine with cheese curds and gravy (Medium size)', 11.00, 'Poutine', 'medium-poutine.jpg'),
     ('Large Poutine', 'Classic poutine with cheese curds and gravy (Large size)', 13.00, 'Poutine', 'large-poutine.jpg'),
-
-    -- Onion Rings
-    ('Onion Rings', 'Crispy deep-fried onion rings', 6.50, 'Sides', 'onion-rings.jpg'),
 
     -- Platters (All Platters Include Fries and Drink)
     ('Cheeseburger Platter', 'Cheeseburger served with fries and drink', 12.25, 'Platters', 'cheeseburger-platter.jpg'),
     ('Chicken Burger Platter', 'Chicken burger served with fries and drink', 12.25, 'Platters', 'chicken-burger-platter.jpg'),
-    ('Double Pogo Platter', 'Two pogos served with fries and drink', 12.50, 'Platters', 'double-pogo-platter.jpg'),
+    ('Double Pogo Platter', 'Two pogos served with fries and drink', 12.50, 'Platters', 'pogo-platter.jpg'),
     ('Double Hot Dog Platter', 'Two hot dogs served with fries and drink', 12.50, 'Platters', 'double-hotdog-platter.jpg'),
     ('Sausage Platter', 'Grilled sausage served with fries and drink', 12.25, 'Platters', 'sausage-platter.jpg'),
-    ('Single Pogo Platter', 'One pogo served with fries and drink', 10.50, 'Platters', 'single-pogo-platter.jpg'),
-    ('Single Hot Dog Platter', 'One hot dog served with fries and drink', 10.50, 'Platters', 'single-hotdog-platter.jpg'),
+    ('Single Pogo Platter', 'One pogo served with fries and drink', 10.50, 'Platters', 'pogo-platter.jpg'),
+    ('Single Hot Dog Platter', 'One hot dog served with fries and drink', 10.50, 'Platters', 'hotdog-combo.jpg'),
     ('Hamburger Platter', 'Hamburger served with fries and drink', 11.75, 'Platters', 'hamburger-platter.jpg'),
 
     -- Sandwiches
@@ -99,26 +97,17 @@ db.run(`INSERT INTO menu_items (name, description, price, category, image_url) V
     ('Sausage', 'Grilled sausage in a bun', 6.00, 'Sandwiches', 'sausage.jpg'),
 
     -- Drinks
-    ('Pepsi', 'Classic Pepsi soft drink', 2.00, 'Drinks', 'pepsi.jpg'),
-    ('Diet Pepsi', 'Diet Pepsi soft drink', 2.00, 'Drinks', 'diet-pepsi.jpg'),
-    ('Coke', 'Classic Coca-Cola soft drink', 2.00, 'Drinks', 'coke.jpg'),
-    ('Diet Coke', 'Diet Coca-Cola soft drink', 2.00, 'Drinks', 'diet-coke.jpg'),
-    ('Coke Zero', 'Zero-sugar Coca-Cola', 2.00, 'Drinks', 'coke-zero.jpg'),
-    ('Root Beer', 'Classic root beer soft drink', 2.00, 'Drinks', 'root-beer.jpg'),
-    ('Sprite', 'Lemon-lime Sprite soft drink', 2.00, 'Drinks', 'sprite.jpg'),
-    ('Canada Dry', 'Ginger ale by Canada Dry', 2.00, 'Drinks', 'canada-dry.jpg'),
-    ('Orange Crush', 'Orange-flavored soft drink', 2.00, 'Drinks', 'orange-crush.jpg'),
-    ('Spring Water', 'Bottled spring water', 2.00, 'Drinks', 'spring-water.jpg'),
+    ('Soft Drinks', 'Pepsi, Diet Pesi, Coke, Diet Coke, Coke Zero, Root Beer, Sprite, Canada Dry, Orange Crush, Spring Water, Ice Tea', 2.00, 'Drinks', 'soft-drinks.jpg'),
 
     -- Extras
-    ('Sub Fries for Poutine', 'Upgrade your meal by replacing fries with poutine', 3.00, 'Extras', 'sub-fries-poutine.jpg'),
+    ('Sub Fries for Poutine', 'Upgrade your meal by replacing fries with poutine', 3.00, 'Extras', 'chicken-fingers.jpg'),
     ('Extra Cheese', 'Extra cheese topping', 3.00, 'Extras', 'extra-cheese.jpg'),
     ('Add Bacon (Slice)', 'Add crispy bacon to any meal', 0.75, 'Extras', 'bacon-slice.jpg'),
 
     -- Gravy
     ('Gravy', 'Rich homemade gravy', 1.25, 'Extras', 'gravy.jpg'),
-    ('Gravy on the Side (Small)', 'Small portion of gravy on the side', 1.75, 'Extras', 'gravy-small.jpg'),
-    ('Gravy on the Side (Large)', 'Large portion of gravy on the side', 2.25, 'Extras', 'gravy-large.jpg')
+    ('Gravy on the Side (Small)', 'Small portion of gravy on the side', 1.75, 'Extras', 'gravy.jpg'),
+    ('Gravy on the Side (Large)', 'Large portion of gravy on the side', 2.25, 'Extras', 'gravy.jpg')
 `);
 
 
