@@ -1,9 +1,54 @@
 const sqlite3 = require("sqlite3").verbose();
+const bcrypt = require("bcryptjs");
 const db = new sqlite3.Database("sns_fries.db");
 
-db.serialize(function() {
-  // Create menu_items table
+db.serialize(async function() {
+  // Drop existing tables
+  db.run("DROP TABLE IF EXISTS users");
   db.run("DROP TABLE IF EXISTS menu_items");
+  db.run("DROP TABLE IF EXISTS reviews");
+
+  // Create users table
+  db.run(
+    `CREATE TABLE users (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      username TEXT NOT NULL UNIQUE,
+      email TEXT NOT NULL UNIQUE,
+      password TEXT NOT NULL,
+      role TEXT CHECK(role IN ('admin', 'user')) NOT NULL DEFAULT 'user',
+      created_at TEXT DEFAULT CURRENT_TIMESTAMP
+    )`
+  );
+
+  // Hash password for admin user and insert
+  const saltRounds = 10;
+  bcrypt.hash("admin123", saltRounds, (err, hash) => {
+    if (err) {
+      console.error("Error hashing admin password:", err);
+    } else {
+      db.run(
+        "INSERT INTO users (username, email, password, role) VALUES (?, ?, ?, ?)",
+        ["admin", "admin@example.com", hash, "admin"],
+        function (insertErr) {
+          if (insertErr) {
+            console.error("Error inserting admin user:", insertErr);
+          } else {
+            console.log("Admin user created successfully!");
+          }
+          // Close the database connection after all operations
+          db.close((closeErr) => {
+            if (closeErr) {
+              console.error("Error closing database:", closeErr);
+            } else {
+              console.log("Database initialized successfully!");
+            }
+          });
+        }
+      );
+    }
+  });
+
+  // Create menu_items table
   db.run(`
     CREATE TABLE menu_items (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -78,7 +123,6 @@ db.run(`INSERT INTO menu_items (name, description, price, category, image_url) V
 
 
   // Create reviews table
-  db.run("DROP TABLE IF EXISTS reviews");
   db.run(`
     CREATE TABLE reviews (
       id INTEGER PRIMARY KEY AUTOINCREMENT,

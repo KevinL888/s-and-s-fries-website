@@ -19,7 +19,8 @@ app.use(express.urlencoded({ extended: true })); // To handle form data
 
 // Import Routes
 const menuRoutes = require("./routes/menuRoutes");
-const reviewRoutes = require("./routes/reviewRoutes"); // ✅ Added back reviewRoutes
+const reviewRoutes = require("./routes/reviewRoutes");
+const userRoutes = require("./routes/userRoutes");
 
 // Home Route - Render index.mustache
 app.get("/", (req, res) => {
@@ -42,6 +43,8 @@ app.get("/", (req, res) => {
 // Use Routes
 app.use("/menu", menuRoutes);
 app.use("/reviews", reviewRoutes);
+app.use("/auth", userRoutes); 
+
 
 // Start the server
 app.listen(port, () => {

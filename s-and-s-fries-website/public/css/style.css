@@ -477,3 +477,16 @@
     padding-right: 0;
     border-right: none;
 }
+
+@media (max-width: 991px) {
+    .dropdown-menu {
+        min-width: 100% !important; /* Match button width */
+        width: 100% !important; /* Ensure dropdown matches button width */
+    }
+
+    .dropdown-item {
+        text-align: left !important; /* Align text inside dropdown */
+        padding-left: 15px !important; /* Add padding for spacing */
+    }
+}
+

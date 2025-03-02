@@ -15,7 +15,7 @@ function getMenuPage(req, res) {
             res.render("menu", { 
                 menuItems, 
                 categories 
-            }); // ✅ Now sending categories to Mustache
+            }); // 
         });
     });
 }
