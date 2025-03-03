@@ -81,18 +81,34 @@ function addMenuItem(req, res) {
     });
 }
 
+// **Update Menu Item (Retains Existing Image if Not Provided)**
 function updateMenuItem(req, res) {
-    const { id, name, description, price, category } = req.body;
-    const image_url = req.file ? req.file.filename : null; // Save new image filename if provided
+    const id = req.params.id; // 🔹 Take ID from URL param instead of req.body.id
+    const { name, description, price, category } = req.body;
+    const newImage = req.file ? req.file.filename : null; // Save new image if uploaded
 
-    menuModel.updateMenuItem(id, name, description, price, category, image_url, (err) => {
-        if (err) return res.status(500).json({ error: "Database error" });
-        res.json({ message: "Menu item updated successfully" });
+    if (!name || !description || !price || !category) {
+        return res.status(400).json({ error: "Missing required fields" });
+    }
+
+    // Get the existing menu item to check its current image
+    menuModel.getMenuItemById(id, (err, existingItem) => {
+        if (err || !existingItem) {
+            return res.status(404).json({ error: "Menu item not found" });
+        }
+
+        // Preserve existing image if no new image was uploaded
+        const finalImage = newImage || existingItem.image_url;
+
+        menuModel.updateMenuItem(id, name, description, price, category, finalImage, (err) => {
+            if (err) return res.status(500).json({ error: "Database error" });
+
+            res.json({ message: "✅ Menu item updated successfully!" });
+        });
     });
 }
 
-
-// 📌 **Delete Menu Item (Removes Image)**
+// **Delete Menu Item (Removes Image)**
 function deleteMenuItem(req, res) {
     const id = req.params.id;
 

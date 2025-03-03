@@ -17,7 +17,7 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage: storage });
 
-// ✅ **Ensure `req.user` is available in `/menu`**
+// **Ensure `req.user` is available in `/menu`**
 router.get("/", authenticateToken, (req, res) => {
     console.log("🔹 Request received at /menu");
     console.log("🔍 Incoming Headers:", req.headers);
@@ -25,16 +25,19 @@ router.get("/", authenticateToken, (req, res) => {
     menuController.getMenuPage(req, res);
 });
 
-// 📌 Public API Routes
+// Public API Routes
 router.get("/api", menuController.getAllMenuItemsAPI);
 router.get("/api/categories", menuController.getAllCategoriesAPI);
 router.get("/api/category/:category", menuController.getMenuItemsByCategory);
 router.get("/api/:id", menuController.getMenuItemById);
 
-// 🔐 Protected Routes (Admins Only)
+// Protected Routes (Admins Only)
 router.post("/api", authenticateToken, checkAdmin, upload.single("image"), menuController.addMenuItem);
 
-// 🔥 Delete Menu Item & Image
+// Add route for updating a menu item
+router.put("/api/:id", authenticateToken, checkAdmin, upload.single("image"), menuController.updateMenuItem);
+
+// Delete Menu Item & Image
 router.delete("/api/:id", authenticateToken, checkAdmin, async (req, res) => {
     const menuItemId = req.params.id;
 

@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken");
 const SECRET_KEY = "supersecret"; // Use an environment variable in production
 
-// ✅ Middleware: Verify JWT Token (Supports Cookies & Headers)
+// Middleware: Verify JWT Token (Supports Cookies & Headers)
 function authenticateToken(req, res, next) {
     console.log("🔹 Authenticate Token Middleware Triggered");
 
@@ -19,7 +19,7 @@ function authenticateToken(req, res, next) {
         return next();
     }
 
-    // ✅ Verify token
+    // Verify token
     jwt.verify(token, SECRET_KEY, (err, user) => {
         if (err) {
             console.log("❌ Invalid Token:", err.message);
@@ -32,7 +32,7 @@ function authenticateToken(req, res, next) {
     });
 }
 
-// ✅ Middleware: Check if user is an admin
+// Middleware: Check if user is an admin
 function checkAdmin(req, res, next) {
     console.log("🔹 Check Admin Middleware Triggered");
 

@@ -89,30 +89,21 @@
     $(document).ready(function () {
         var currentPath = window.location.pathname;
 
-        // Ensure token is sent when requesting `/menu`
+        // ✅ Fetch menu data with authentication cookies
         if (currentPath === "/menu") {
-            const token = localStorage.getItem("token");
+            console.log("🔹 Fetching menu data...");
 
-            if (token) {
-                console.log("🔹 Sending token when requesting /menu");
-
-                fetch("/menu", {
-                    method: "GET",
-                    headers: {
-                        "Authorization": "Bearer " + token,
-                        "Content-Type": "application/json"
-                    }
-                })
-                .then(response => response.text())
-                .then(html => {
-                    console.log("✅ Menu page fetched successfully.");
-                    // Instead of reloading everything, update only sections if needed
-                    $("#menu-container").html($(html).find("#menu-container").html());
-                })
-                .catch(error => console.error("❌ Error fetching menu page:", error));
-            } else {
-                console.warn("⚠️ No token found in Local Storage. User might not be logged in.");
-            }
+            fetch("/menu", {
+                method: "GET",
+                credentials: "include",  // ✅ Automatically sends cookies
+                headers: { "Content-Type": "application/json" }
+            })
+            .then(response => response.text())
+            .then(html => {
+                console.log("✅ Menu page fetched successfully.");
+                $("#menu-container").html($(html).find("#menu-container").html());
+            })
+            .catch(error => console.error("❌ Error fetching menu page:", error));
         }
 
         // Highlight active nav link
@@ -131,8 +122,6 @@
                 navbarToggler.attr("aria-expanded", "false");
             }
         });
+    });
 
-    // Handle Authentication UI
-    updateAuthUI();
-});
 })(jQuery);

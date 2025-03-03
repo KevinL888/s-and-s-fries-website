@@ -38,7 +38,6 @@
         <!-- Hero Section with Navbar Inside -->
         <div class="container-xxl position-relative p-0">
             <div class="container-xxl py-5 bg-dark hero-header mb-5">
-                <!-- Navbar Moved Inside Hero Section -->
                 {{> layouts/header}}
 
                 <div class="container text-center my-5 pt-5 pb-4">
@@ -89,8 +88,11 @@
                                 <small class="fst-italic">{{description}}</small>
                             </div>
 
-                            <!-- Delete Button Only Renders for Admins -->
+                            <!-- Admin Buttons -->
                             {{#isAdmin}}
+                                <button class="btn btn-primary btn-sm ms-2 editMenuItem" data-id="{{id}}">
+                                    <i class="fa fa-edit"></i>
+                                </button>
                                 <button class="btn btn-danger btn-sm ms-2 deleteMenuItem" data-id="{{id}}">
                                     <i class="fa fa-trash"></i>
                                 </button>
@@ -138,6 +140,43 @@
                                 <input type="file" class="form-control" id="menuItemImage" accept="image/*" required>
                             </div>
                             <button type="submit" class="btn btn-success w-100">Add Menu Item</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Edit Menu Item Modal -->
+        <div class="modal fade" id="editMenuItemModal" tabindex="-1" aria-labelledby="editMenuItemModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editMenuItemModalLabel">Edit Menu Item</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="editMenuItemForm">
+                            <div class="mb-3">
+                                <label for="editMenuItemName" class="form-label">Name</label>
+                                <input type="text" class="form-control" id="editMenuItemName" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="editMenuItemDescription" class="form-label">Description</label>
+                                <textarea class="form-control" id="editMenuItemDescription" required></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label for="editMenuItemPrice" class="form-label">Price</label>
+                                <input type="number" class="form-control" id="editMenuItemPrice" step="0.01" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="editMenuItemCategory" class="form-label">Category</label>
+                                <select id="editMenuItemCategory" class="form-select">
+                                    {{#categories}}
+                                    <option value="{{.}}">{{.}}</option>
+                                    {{/categories}}
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-success w-100">Update Menu Item</button>
                         </form>
                     </div>
                 </div>

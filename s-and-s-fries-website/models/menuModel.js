@@ -3,16 +3,31 @@ const db = new sqlite3.Database("sns_fries.db");
 const path = require("path");
 const fs = require("fs");
 
-//  **Fetch All Menu Items**
 function getAllMenuItems(callback) {
+    const defaultCategories = ["Fries/OnionRings", "Poutine", "Platters", "Sandwiches", "Drinks", "Extras"];
+
     db.all("SELECT * FROM menu_items", [], (err, rows) => {
         if (err) {
             console.error("Error fetching menu items:", err.message);
             return callback(err, null);
         }
+
+        // Sort items based on default category order
+        rows.sort((a, b) => {
+            let indexA = defaultCategories.indexOf(a.category);
+            let indexB = defaultCategories.indexOf(b.category);
+
+            // If category is not in defaults, push it to the end
+            if (indexA === -1) indexA = defaultCategories.length;
+            if (indexB === -1) indexB = defaultCategories.length;
+
+            return indexA - indexB;
+        });
+
         callback(null, rows);
     });
 }
+
 
 //  **Fetch a Single Menu Item by ID**
 function getMenuItemById(id, callback) {
@@ -40,19 +55,28 @@ function addMenuItem(name, description, price, category, image_url, callback) {
     );
 }
 
-//  **Update an Existing Menu Item**
+// **Update an Existing Menu Item with Image Retention**
 function updateMenuItem(id, name, description, price, category, image_url, callback) {
-    db.run(
-        "UPDATE menu_items SET name = ?, description = ?, price = ?, category = ?, image_url = ? WHERE id = ?",
-        [name, description, price, category, image_url, id],
-        function (err) {
-            if (err) {
-                console.error("Error updating menu item:", err.message);
-                return callback(err);
-            }
-            callback(null);
+    getMenuItemById(id, (err, existingItem) => {
+        if (err || !existingItem) {
+            return callback(new Error("Menu item not found"));
         }
-    );
+
+        // Use existing image if new image is not provided
+        const finalImage = image_url || existingItem.image_url;
+
+        db.run(
+            "UPDATE menu_items SET name = ?, description = ?, price = ?, category = ?, image_url = ? WHERE id = ?",
+            [name, description, price, category, finalImage, id],
+            function (err) {
+                if (err) {
+                    console.error("Error updating menu item:", err.message);
+                    return callback(err);
+                }
+                callback(null);
+            }
+        );
+    });
 }
 
 //  **Delete a Menu Item (Also Removes Image)**
@@ -86,16 +110,25 @@ function deleteMenuItem(id, callback) {
 
 //  **Fetch Unique Categories**
 function getAllCategories(callback) {
+    const defaultCategories = ["Fries/OnionRings", "Poutine", "Platters", "Sandwiches", "Drinks", "Extras"];
+
     db.all("SELECT DISTINCT category FROM menu_items", [], (err, rows) => {
         if (err) {
             return callback(err, null);
         }
-        const categories = rows.map(row => row.category); // Extract category names
-        callback(null, categories);
+
+        let categories = rows.map(row => row.category); // Extract categories from database
+
+        // Merge categories, ensuring default ones stay on top
+        let sortedCategories = [...defaultCategories, ...categories.filter(c => !defaultCategories.includes(c))];
+
+        callback(null, sortedCategories);
     });
 }
 
-// ✅ **Export All Functions**
+
+
+// **Export All Functions**
 module.exports = {
     getAllMenuItems,
     getMenuItemById,
