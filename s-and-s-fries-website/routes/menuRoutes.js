@@ -19,9 +19,6 @@ const upload = multer({ storage: storage });
 
 // **Ensure `req.user` is available in `/menu`**
 router.get("/", authenticateToken, (req, res) => {
-    console.log("🔹 Request received at /menu");
-    console.log("🔍 Incoming Headers:", req.headers);
-
     menuController.getMenuPage(req, res);
 });
 

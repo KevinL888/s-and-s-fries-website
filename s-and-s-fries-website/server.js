@@ -55,13 +55,17 @@ function getUserFromToken(req) {
 app.use((req, res, next) => {
     req.user = getUserFromToken(req);
     res.locals.user = req.user;
+    res.locals.isAdmin = req.user && req.user.role === "admin"; 
+    res.locals.isAllowed = req.user && (req.user.role === "user" || req.user.role === "admin"); 
     next();
 });
+
 
 // Import Routes
 const menuRoutes = require("./routes/menuRoutes");
 const reviewRoutes = require("./routes/reviewRoutes");
 const authRoutes = require("./routes/authRoutes");
+const contactRoutes = require("./routes/contactRoutes");
 
 // Home Route
 app.get("/", (req, res) => {
@@ -86,8 +90,9 @@ app.get("/", (req, res) => {
 
 // Use Routes
 app.use("/menu", menuRoutes);
-app.use("/reviews", reviewRoutes);
+app.use("/review", reviewRoutes);
 app.use("/api/auth", authRoutes);
+app.use("/contact", contactRoutes);
 
 // Start Server
 app.listen(port, () => {

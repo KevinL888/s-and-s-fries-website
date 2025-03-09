@@ -89,21 +89,17 @@
     $(document).ready(function () {
         var currentPath = window.location.pathname;
 
-        // ✅ Fetch menu data with authentication cookies
         if (currentPath === "/menu") {
-            console.log("🔹 Fetching menu data...");
-
             fetch("/menu", {
                 method: "GET",
-                credentials: "include",  // ✅ Automatically sends cookies
+                credentials: "include",
                 headers: { "Content-Type": "application/json" }
             })
             .then(response => response.text())
             .then(html => {
-                console.log("✅ Menu page fetched successfully.");
                 $("#menu-container").html($(html).find("#menu-container").html());
             })
-            .catch(error => console.error("❌ Error fetching menu page:", error));
+            .catch(error => console.error("Error fetching menu page:", error));
         }
 
         // Highlight active nav link

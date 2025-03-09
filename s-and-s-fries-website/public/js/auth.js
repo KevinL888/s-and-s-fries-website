@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     console.log("🔹 Fetching user data from /api/auth/me...");
 
-    // ✅ Fetch user info from cookies
+    // Fetch user info from cookies
     fetch("/api/auth/me", {
         method: "GET",
         credentials: "include" // Ensures cookies are sent with the request
@@ -16,19 +16,19 @@ document.addEventListener("DOMContentLoaded", function () {
     .then(response => response.ok ? response.json() : null)
     .then(user => {
         if (user) {
-            console.log("✅ User authenticated:", user);
+            console.log("User authenticated:", user);
             if (accountBtn) {
                 accountBtn.innerHTML = user.role === "admin" ? "Admin" : user.username;
             }
             if (loginRegisterOptions) loginRegisterOptions.classList.add("d-none");
             if (logoutOption) logoutOption.classList.remove("d-none");
         } else {
-            console.log("❌ Not authenticated");
+            console.log("Not authenticated");
         }
     })
-    .catch(err => console.error("❌ Error fetching user data:", err));
+    .catch(err => console.error("Error fetching user data:", err));
 
-    // ✅ Prevent duplicate event listeners
+    // Prevent duplicate event listeners
     function addEventListenerOnce(element, eventType, handler) {
         if (element && !element.dataset.listenerAttached) {
             element.addEventListener(eventType, handler);
@@ -36,7 +36,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    // ✅ Login Form Submission
+    // Login Form Submission
     addEventListenerOnce(loginForm, "submit", function (e) {
         e.preventDefault();
 
@@ -54,14 +54,13 @@ document.addEventListener("DOMContentLoaded", function () {
             if (data.error) {
                 alert("Login failed: " + data.error);
             } else {
-                console.log("✅ Login successful:", data);
                 location.reload();
             }
         })
-        .catch(err => console.error("❌ Login error:", err));
+        .catch(err => console.error("Login error:", err));
     });
 
-    // ✅ Register Form Submission
+    // Register Form Submission
     addEventListenerOnce(registerForm, "submit", function (e) {
         e.preventDefault();
 
@@ -80,21 +79,19 @@ document.addEventListener("DOMContentLoaded", function () {
             if (data.error) {
                 alert("Registration failed: " + data.error);
             } else {
-                console.log("✅ Registration successful:", data);
                 alert("Registration successful! Logging in...");
                 location.reload();
             }
         })
-        .catch(err => console.error("❌ Registration error:", err));
+        .catch(err => console.error("Registration error:", err));
     });
 
-    // ✅ Logout Logic
+    // Logout Logic
     addEventListenerOnce(logoutBtn, "click", function () {
         fetch("/api/auth/logout", { method: "POST", credentials: "include" })
         .then(() => {
-            console.log("✅ Logged out successfully");
             location.reload();
         })
-        .catch(err => console.error("❌ Logout error:", err));
+        .catch(err => console.error("Logout error:", err));
     });
 });

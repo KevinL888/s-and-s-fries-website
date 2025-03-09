@@ -22,19 +22,18 @@ document.addEventListener("DOMContentLoaded", function () {
     // 🔹 Check if User is Admin
     fetch("/api/auth/me", {
         method: "GET",
-        credentials: "include"  // ✅ Use cookies for authentication
+        credentials: "include" 
     })
     .then(response => response.ok ? response.json() : null)
     .then(user => {
         if (user && user.role === "admin") {
-            console.log("✅ User is an admin.");
             document.querySelectorAll(".deleteMenuItem, .editMenuItem").forEach(btn => btn.classList.remove("d-none"));
             document.getElementById("adminControls")?.classList.remove("d-none"); // Show "Add Menu Item" button if exists
         } else {
             console.warn("⚠️ User is not an admin or not logged in.");
         }
     })
-    .catch(err => console.error("❌ Error fetching user data:", err));
+    .catch(err => console.error("Error fetching user data:", err));
 
     // 🔹 Delete Menu Item
     document.querySelectorAll(".deleteMenuItem").forEach(button => {
@@ -44,14 +43,14 @@ document.addEventListener("DOMContentLoaded", function () {
             if (confirm("Are you sure you want to delete this menu item?")) {
                 fetch(`/menu/api/${menuItemId}`, {
                     method: "DELETE",
-                    credentials: "include", // ✅ Send authentication cookies
+                    credentials: "include",
                 })
                 .then(response => response.json())
                 .then(data => {
                     alert(data.message);
                     location.reload(); // Refresh the page after deleting
                 })
-                .catch(error => console.error("❌ Error deleting item:", error));
+                .catch(error => console.error("Error deleting item:", error));
             }
         });
     });
@@ -91,11 +90,11 @@ document.addEventListener("DOMContentLoaded", function () {
                 if (data.error) {
                     alert("Error adding menu item: " + data.error);
                 } else {
-                    alert("✅ Menu item added successfully!");
+                    alert("Menu item added successfully!");
                     location.reload();
                 }
             })
-            .catch(error => console.error("❌ Error adding menu item:", error));
+            .catch(error => console.error("Error adding menu item:", error));
         });
     }
 
@@ -118,7 +117,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     document.getElementById("editMenuItemCategory").value = data.category;
                     editMenuItemModal.show();
                 })
-                .catch(error => console.error("❌ Error fetching menu item:", error));
+                .catch(error => console.error("Error fetching menu item:", error));
         });
     });
 
@@ -145,7 +144,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 alert(data.message);
                 location.reload();
             })
-            .catch(error => console.error("❌ Error updating menu item:", error));
+            .catch(error => console.error("Error updating menu item:", error));
         });
     }
 });

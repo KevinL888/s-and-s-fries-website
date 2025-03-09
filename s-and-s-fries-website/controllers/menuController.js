@@ -14,9 +14,6 @@ function getMenuPage(req, res) {
             const user = req.user || null;
             const isAdmin = user && user.role === "admin";
 
-            console.log("🔹 Debugging User in getMenuPage:", user);
-            console.log("🔹 isAdmin Value in getMenuPage:", isAdmin);
-
             // Pass user and admin status to Mustache
             res.render("menu", { 
                 menuItems, 
