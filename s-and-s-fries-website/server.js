@@ -66,6 +66,7 @@ const menuRoutes = require("./routes/menuRoutes");
 const reviewRoutes = require("./routes/reviewRoutes");
 const authRoutes = require("./routes/authRoutes");
 const contactRoutes = require("./routes/contactRoutes");
+const aboutRoutes = require("./routes/aboutRoutes");
 
 // Home Route
 app.get("/", (req, res) => {
@@ -93,6 +94,7 @@ app.use("/menu", menuRoutes);
 app.use("/review", reviewRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/contact", contactRoutes);
+app.use("/about", aboutRoutes);
 
 // Start Server
 app.listen(port, () => {
