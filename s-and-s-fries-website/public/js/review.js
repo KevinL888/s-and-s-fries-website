@@ -1,13 +1,13 @@
 document.addEventListener("DOMContentLoaded", () => {
+    // Delete review logic with confirmation
     document.querySelectorAll(".delete-form").forEach(form => {
         form.addEventListener("submit", function (event) {
             event.preventDefault();
             const reviewId = this.action.split("/").pop();
 
-            // Ask for confirmation before deleting
             const confirmDelete = confirm("Are you sure you want to delete this review?");
             if (!confirmDelete) {
-                return; // If user cancels, stop the function
+                return;
             }
 
             fetch(`/review/${reviewId}`, {
@@ -30,4 +30,17 @@ document.addEventListener("DOMContentLoaded", () => {
             });
         });
     });
+
+    // Review sorting logic
+    const reviewFilter = document.getElementById("reviewFilter");
+    if (reviewFilter) {
+        reviewFilter.addEventListener("change", function() {
+            window.location.href = `/review?sort=${this.value}`;
+        });
+
+        // Set the selected value based on query param (to maintain state on reload)
+        const urlParams = new URLSearchParams(window.location.search);
+        const currentSort = urlParams.get("sort") || "recent";
+        reviewFilter.value = currentSort;
+    }
 });

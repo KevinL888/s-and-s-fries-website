@@ -15,9 +15,11 @@ function checkUserOrAdmin(req, res, next) {
     next();
 }
 
-// 🔹 GET all reviews and menu items, then render reviews page
+// 🔹 GET all reviews and menu items, then render reviews page (supports sorting)
 router.get("/", authenticateToken, (req, res) => {
-    reviewModel.getAllReviews((err, reviews) => {
+    const sortBy = req.query.sort || "recent"; // Default sorting: most recent
+
+    reviewModel.getAllReviews(sortBy, (err, reviews) => {
         if (err) {
             console.error("Error fetching reviews:", err);
             return res.status(500).send("Error fetching reviews");
@@ -30,7 +32,12 @@ router.get("/", authenticateToken, (req, res) => {
                 return res.status(500).send("Error fetching menu items");
             }
 
-            res.render("review", { reviews, menuItems, user: req.user });
+            res.render("review", {
+                reviews,
+                menuItems,
+                user: req.user,
+                sortBy // Pass the current sorting selection to the frontend
+            });
         });
     });
 });

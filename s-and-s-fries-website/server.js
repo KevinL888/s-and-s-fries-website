@@ -71,7 +71,7 @@ const aboutRoutes = require("./routes/aboutRoutes");
 // Home Route
 app.get("/", (req, res) => {
     const user = req.user;
-    reviewModel.getAllReviews((err, reviews) => {
+    reviewModel.getAllReviews("recent", (err, reviews) => { 
         if (err) {
             console.error("❌ Error fetching reviews:", err);
             return res.status(500).send("Error fetching reviews");
@@ -84,7 +84,6 @@ app.get("/", (req, res) => {
                 : review.review_text
         }));
 
-        console.log("✅ Rendering index.mustache");
         res.render("index", { reviews: truncatedReviews, user });
     });
 });

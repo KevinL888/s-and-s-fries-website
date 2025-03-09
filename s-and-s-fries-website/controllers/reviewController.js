@@ -1,9 +1,11 @@
 const reviewModel = require("../models/reviewModel");
 const menuModel = require("../models/menuModel");
 
-// Fetch all reviews & menu items
+// Fetch all reviews & menu items with sorting
 function getAllReviews(req, res) {
-    reviewModel.getAllReviews((err, reviews) => {
+    const sortBy = req.query.sort || "recent"; // Get sorting option from query params (default: recent)
+
+    reviewModel.getAllReviews(sortBy, (err, reviews) => {
         if (err) {
             return res.status(500).json({ error: "Database error" });
         }
@@ -14,10 +16,11 @@ function getAllReviews(req, res) {
                 return res.status(500).json({ error: "Error fetching menu items" });
             }
 
-            res.render("reviews", {
+            res.render("review", {
                 reviews,
                 menuItems,
-                user: req.user
+                user: req.user,
+                sortBy // Pass the current sorting option to the frontend
             });
         });
     });
